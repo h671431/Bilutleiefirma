@@ -18,8 +18,8 @@ public class Main {
             initFirma();
             opprettStartKontor();
 
-            Kunde kunde1 = new Kunde("Maria", "Hansen", new Adresse("Slottsgave 23", "1500", "Oslo"), "69696969");
-            Kunde kunde2 = new Kunde("Herman", "Hermansen", new Adresse("Mindeveien 75C", "5000", "Bergen"), "42069420");
+            Kunde kunde1 = new Kunde("Maria", "Hansen", "Slottsgave 23", "69696969");
+            Kunde kunde2 = new Kunde("Herman", "Hermansen","Mindeveien 75C", "42069420");
             List<Kunde> kunder = new ArrayList<>();
             kunder.add(kunde1);
             kunder.add(kunde2);

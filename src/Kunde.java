@@ -4,7 +4,7 @@ public class Kunde {
 
         private String fornavn;
         private String etternavn;
-        private Adresse adresse;
+        private String adresse;
         private String telefon;
 
         /**
@@ -15,7 +15,7 @@ public class Kunde {
          * @param adresse   The address of the customer.
          * @param telefon   The phone number of the customer.
          */
-        public Kunde(String fornavn, String etternavn, Adresse adresse, String telefon) {
+        public Kunde(String fornavn, String etternavn, String adresse, String telefon) {
             this.fornavn = fornavn;
             this.etternavn = etternavn;
             this.adresse = adresse;
