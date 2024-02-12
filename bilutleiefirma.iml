@@ -19,5 +19,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="btmatthews.selenium.junit4.runner" level="project" />
   </component>
 </module>
