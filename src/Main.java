@@ -65,57 +65,60 @@ public class Main {
 
         }
 
-        public static void initRegistrering(List<Kunde> kunder) {
-            List<Kontor> kontor = firma.getKontor();
+    public static void initRegistrering(List<Kunde> kunder) {
+        List<Kontor> kontor = firma.getKontor();
 
-            Scanner scanner = new Scanner(System.in);
-            String innput = "";
-            String kontorString = "";
-            String velkommen = "Velkommen til " + firma.getNavn() + "!"
-                    + "\nDu kan velge mellom våres " + firma.getKontor().size() + " kontorer: ";
+        Scanner scanner = new Scanner(System.in);
 
-            for (int i = 0; i < firma.getKontor().size(); i++) {
-                kontorString += "\n" + (i + 1) + "-" + kontor.get(i).getNavn();
-            }
-            velkommen += kontorString + "\nTast nummer for hvilket kontor du velger";
+        for (Kunde kunde : kunder) {
+            System.out.println("Velkommen til " + firma.getNavn() + "!");
+            System.out.println("Du kan velge mellom følgende kontorer:");
 
-            for (Kunde kunde : kunder) {
-                System.out.println(velkommen);
-                int kontorValg = scanner.nextInt();
-
-                //registrere returkontor
-                System.out.println("Tast inn nummer på det kontoret du ønsker å returnere din bil til: " + kontorString);
-                int returkontor = scanner.nextInt();
-
-                //Registrer dato for utleie
-                System.out.println("Vennligst oppgi en dato i formatet ÅÅÅÅ-MM-DD for når du ønsker å leie bilen: ");
-                String datoInput = scanner.next();
-                LocalDate dato = LocalDate.parse(datoInput);
-
-                //registrere antall dager
-                System.out.println("Hvor mange dager ønsker du å leie bilen ?");
-                int antallDager = scanner.nextInt();
-                System.out.println(antallDager);
-
-
-                //Liste ut alle tilgjengelige biler med pris
-                List<Bil> ledigBiler = finnLedigBiler(dato, kontorValg);
-                String bilerOgPris = "";
-                for (int i = 0; i < ledigBiler.size(); i++) {
-                    Bil x = ledigBiler.get(i);
-                    bilerOgPris += "\n " + (i + 1) + x.toString() + ". Med en dagspris på: " + x.hentPris() + ". Totaltpris: " + antallDager * x.hentPris();
-                }
-                System.out.println("Velg bilen du ønsker: (Tast nummer til bilen) \n" + bilerOgPris);
-                int bil = scanner.nextInt();
-
-                Reservasjon reservasjon = new Reservasjon(firma.getKontor().get(kontorValg), ledigBiler.get(bil), kunde, dato, antallDager);
-                System.out.println("Tusen takk for din bestilling hos oss, " + kunde.getFornavn() + " " + kunde.getEtternavn());
+            for (int i = 0; i < kontor.size(); i++) {
+                System.out.println((i + 1) + ": " + kontor.get(i).getNavn());
             }
 
+            System.out.println("Tast nummer for hvilket kontor du velger for å fortsette");
+            int kontorValg = scanner.nextInt();
 
+            if (kontorValg < 1 || kontorValg > kontor.size()) {
+                System.out.println("Ugyldig kontornummer. Vennligst velg på nytt.");
+                continue; // Gå til neste iterasjon av løkken
+            }
+
+            System.out.println("Tast inn nummer på det kontoret du ønsker å returnere din bil til:");
+            for (int i = 0; i < kontor.size(); i++) {
+                System.out.println((i + 1) + ": " + kontor.get(i).getNavn());
+            }
+            int returkontor = scanner.nextInt();
+
+            System.out.println("Vennligst oppgi en dato i formatet ÅÅÅÅ-MM-DD (for eksempel 2024-12-24) for når du ønsker å leie:");
+            String datoInput = scanner.next();
+            LocalDate dato = LocalDate.parse(datoInput);
+
+            System.out.println("Hvor mange dager ønsker du å leie bilen?");
+            int antallDager = scanner.nextInt();
+
+            List<Bil> ledigBiler = finnLedigBiler(dato, kontorValg);
+            String bilerOgPris = "";
+            for (int i = 0; i < ledigBiler.size(); i++) {
+                Bil x = ledigBiler.get(i);
+                bilerOgPris += "\n" + (i + 1) + x.toString() + ". Med en dagspris på: " + x.hentPris() + ". Totaltpris: " + antallDager * x.hentPris();
+            }
+            System.out.println("Velg en bil du ønsker: (Tast nummer til bilen)\n" + bilerOgPris);
+            int bil = scanner.nextInt();
+
+            Reservasjon reservasjon = new Reservasjon(firma.getKontor().get(kontorValg - 1), ledigBiler.get(bil - 1), kunde, dato, antallDager);
+            System.out.println("Takk for din bestilling " + kunde.getFornavn() + " " + kunde.getEtternavn());
         }
 
-        private static List<Bil> finnLedigBiler(LocalDate dato, int kontor) {
+
+        // Lukk Scanner etter at vi har lest inn verdier fra brukeren
+        scanner.close();
+    }
+
+
+    private static List<Bil> finnLedigBiler(LocalDate dato, int kontor) {
             return firma.getKontor().get(kontor).finnBilerFra(dato);
 
         }
